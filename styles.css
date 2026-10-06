@@ -1574,22 +1574,477 @@ input, select, textarea {
   50% { box-shadow: 0 0 0 12px rgba(234, 179, 8, 0); }
 }
 
-/* Responsive adjustments */
+/* ==========================================================================
+   RESPONSIVE DESIGN SYSTEM (DESKTOP, TABLET, MOBILE)
+   ========================================================================== */
+
+/* Tablet & Smaller Laptops (<= 1024px) */
 @media (max-width: 1024px) {
   .grid-4 { grid-template-columns: repeat(2, 1fr); }
   .grid-3 { grid-template-columns: repeat(2, 1fr); }
-  .top-header-bar { padding: 0.75rem 1rem; }
-  .search-trigger-bar { width: 180px; }
+  .top-header-bar { padding: 0.75rem 1.25rem; }
+  .search-trigger-bar { width: 200px; }
 }
 
+/* Tablets & Mobile Screens (<= 768px) */
 @media (max-width: 768px) {
-  .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
-  .floating-dock { padding: 0.4rem 0.6rem; gap: 0.4rem; overflow-x: auto; }
-  .dock-tab-btn span { display: none; }
-  .dock-tab-btn { padding: 0.5rem; }
-  .search-trigger-bar { display: none; }
-  .student-hero-banner { padding: 1.5rem; }
-  .student-hero-profile { flex-direction: column; text-align: center; }
-  .delta-item-row { grid-template-columns: 1fr; gap: 0.5rem; }
-  .commission-breakdown-grid { grid-template-columns: 1fr; }
+  body {
+    padding-bottom: 95px; /* Ample clearance for floating mobile dock */
+  }
+
+  .main-wrapper {
+    padding: 1rem 0.85rem 6.5rem;
+  }
+
+  .page-header {
+    margin-bottom: 1.25rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+  }
+
+  .page-header > div:last-child {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .page-header > div:last-child button {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .page-title {
+    font-size: 1.4rem;
+  }
+
+  .page-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .grid-3, .grid-2 {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  /* Header Bar on Mobile */
+  .top-header-bar {
+    padding: 0.55rem 0.85rem;
+    gap: 0.5rem;
+  }
+
+  .header-left {
+    gap: 0.6rem;
+  }
+
+  .header-logo {
+    height: 26px;
+  }
+
+  .header-role-badge {
+    font-size: 0.72rem;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .header-right {
+    gap: 0.45rem;
+  }
+
+  /* Compact Circular Search Icon Button on Mobile */
+  .search-trigger-bar {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    justify-content: center;
+    border-radius: var(--radius-full);
+  }
+
+  .search-trigger-bar span,
+  .search-trigger-bar .search-kbd {
+    display: none;
+  }
+
+  /* Compact Quick Action on Mobile Header */
+  #header-quick-action-btn {
+    padding: 0.45rem;
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-full);
+    justify-content: center;
+  }
+
+  #header-quick-action-btn span {
+    display: none;
+  }
+
+  /* Mobile Floating Dock / Taskbar */
+  .floating-dock-container {
+    bottom: 0.65rem;
+    padding: 0 0.5rem;
+    width: 100%;
+  }
+
+  .floating-dock {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.35rem 0.5rem;
+    gap: 0.35rem;
+    justify-content: space-between;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.16);
+    border-radius: var(--radius-full);
+  }
+
+  .floating-dock::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Brand is already in top header; hide from bottom dock on mobile to conserve space */
+  .dock-brand,
+  .dock-divider {
+    display: none;
+  }
+
+  /* Avatar already in header; hide duplicate avatar from dock on mobile */
+  .dock-actions .dock-profile-avatar {
+    display: none;
+  }
+
+  .dock-nav-items {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    flex-shrink: 0;
+  }
+
+  .dock-tab-btn {
+    padding: 0.45rem 0.65rem;
+    font-size: 0.75rem;
+    border-radius: var(--radius-full);
+  }
+
+  .dock-tab-btn span {
+    display: none; /* Clean SVG icons on mobile dock */
+  }
+
+  .dock-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-shrink: 0;
+  }
+
+  .dock-action-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  .dock-streak-pill {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.75rem;
+    gap: 0.25rem;
+    white-space: nowrap;
+  }
+
+  .dock-role-btn {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.75rem;
+    gap: 0.25rem;
+  }
+
+  .role-dropdown-menu {
+    bottom: calc(100% + 10px);
+    right: 0;
+    left: auto;
+    width: 210px;
+    max-width: calc(100vw - 1.5rem);
+  }
+
+  /* Student Hero Banner on Mobile */
+  .student-hero-banner {
+    padding: 1.25rem;
+    border-radius: var(--radius-lg);
+    gap: 1rem;
+  }
+
+  .student-hero-profile {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.85rem;
+    width: 100%;
+  }
+
+  .student-avatar-large {
+    width: 64px;
+    height: 64px;
+    font-size: 1.4rem;
+  }
+
+  .student-hero-info h2 {
+    font-size: 1.35rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .student-hero-badges {
+    justify-content: center;
+  }
+
+  .student-hero-banner > div:last-child {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .student-hero-banner > div:last-child button {
+    width: 100%;
+  }
+
+  /* Stat Cards on Mobile */
+  .stat-card {
+    padding: 0.85rem;
+    gap: 0.65rem;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .stat-icon-box {
+    width: 40px;
+    height: 40px;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+  }
+
+  .stat-value {
+    font-size: 1.25rem;
+  }
+
+  .stat-trend {
+    font-size: 0.72rem;
+  }
+
+  /* Skill Sliders on Mobile */
+  .skill-slider-card {
+    padding: 1rem;
+  }
+
+  .skill-range-input {
+    height: 10px;
+  }
+
+  .skill-range-input::-webkit-slider-thumb {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Peer Roadmap Generator on Mobile */
+  .roadmap-result-container {
+    padding: 1.25rem 1rem;
+    margin-top: 1.25rem;
+    border-radius: var(--radius-lg);
+  }
+
+  .roadmap-header-hero {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .roadmap-header-hero > div:last-child {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .roadmap-header-hero > div:last-child button {
+    width: 100%;
+  }
+
+  /* Stack Delta Rows gracefully on mobile */
+  .delta-item-row {
+    grid-template-columns: 1fr auto;
+    gap: 0.4rem;
+    background: var(--bg-surface-subtle);
+    padding: 0.75rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 0.75rem;
+  }
+
+  .delta-bars-wrapper {
+    grid-column: 1 / -1;
+    margin-top: 0.25rem;
+  }
+
+  .timeline-wrapper {
+    padding-left: 1.25rem;
+  }
+
+  .timeline-step-dot {
+    left: -1.25rem;
+    width: 14px;
+    height: 14px;
+  }
+
+  .timeline-step-content {
+    padding: 0.85rem;
+  }
+
+  /* 1:1 Sessions Dynamic Commission Box on Mobile */
+  .commission-calculator-box {
+    padding: 1rem;
+  }
+
+  .commission-breakdown-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    padding: 0.85rem;
+  }
+
+  /* Tables & Horizontal Touch Scrolling */
+  div[style*="overflow-x: auto"] {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    border-radius: var(--radius-md);
+  }
+
+  .leaderboard-table {
+    min-width: 580px;
+  }
+
+  .leaderboard-table th,
+  .leaderboard-table td {
+    padding: 0.75rem 0.6rem;
+    font-size: 0.82rem;
+  }
+
+  /* Modals as Native Mobile Bottom Sheets */
+  .modal-backdrop {
+    padding: 0.5rem;
+    align-items: flex-end;
+  }
+
+  .razorpay-modal-box,
+  .command-palette-box,
+  .modal-backdrop .card {
+    width: 100%;
+    max-width: 100%;
+    max-height: 90vh !important;
+    overflow-y: auto;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    margin-bottom: 0;
+    animation: slideUpMobile 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .razorpay-header {
+    padding: 1rem;
+  }
+
+  .razorpay-body {
+    padding: 1rem;
+  }
+
+  .payment-methods-tabs {
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    gap: 0.35rem;
+  }
+
+  .payment-method-tab {
+    padding: 0.45rem 0.65rem;
+    font-size: 0.78rem;
+    white-space: nowrap;
+  }
+
+  .upi-app-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .notification-flyout {
+    position: fixed;
+    inset: auto 0.5rem 4.5rem 0.5rem;
+    width: auto;
+    max-width: none;
+    max-height: 65vh;
+  }
+
+  .toast-container {
+    top: 0.75rem;
+    right: 0.75rem;
+    left: 0.75rem;
+  }
+
+  .toast {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+/* Compact Mobile (<= 480px) */
+@media (max-width: 480px) {
+  .header-role-badge span {
+    display: none;
+  }
+
+  .header-role-badge {
+    padding: 0.3rem;
+    border-radius: var(--radius-full);
+  }
+
+  .floating-dock-container {
+    bottom: 0.45rem;
+    padding: 0 0.35rem;
+  }
+
+  .floating-dock {
+    padding: 0.3rem 0.35rem;
+    gap: 0.25rem;
+  }
+
+  .dock-action-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .dock-tab-btn {
+    padding: 0.4rem 0.5rem;
+  }
+
+  .dock-streak-pill {
+    padding: 0.3rem 0.45rem;
+    font-size: 0.72rem;
+  }
+
+  .dock-role-btn {
+    padding: 0.3rem 0.45rem;
+    font-size: 0.72rem;
+  }
+
+  .dock-role-btn i[data-lucide="chevron-up"] {
+    display: none;
+  }
+
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@keyframes slideUpMobile {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
 }

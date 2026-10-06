@@ -1396,6 +1396,30 @@ class SkillCraftApp {
         if (roleMenu) roleMenu.classList.remove('show');
       }
     });
+
+    // Tap outside to dismiss floating menus and notifications (Mobile optimization)
+    document.addEventListener('click', (e) => {
+      const roleSwitcher = document.querySelector('.dock-role-switcher');
+      const roleMenu = document.getElementById('role-dropdown-menu');
+      if (roleSwitcher && roleMenu && !roleSwitcher.contains(e.target)) {
+        roleMenu.classList.remove('show');
+      }
+
+      const notifPanel = document.getElementById('notification-panel');
+      const notifTrigger = document.querySelector('.dock-action-btn[onclick*="toggleNotifications"]');
+      if (notifPanel && !notifPanel.contains(e.target) && notifTrigger && !notifTrigger.contains(e.target)) {
+        notifPanel.classList.remove('show');
+      }
+    });
+
+    // Tap backdrop outside modal box to dismiss on mobile
+    document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+      backdrop.addEventListener('click', (e) => {
+        if (e.target === backdrop) {
+          backdrop.classList.remove('show');
+        }
+      });
+    });
   }
 
   handleGlobalSearch(query) {
