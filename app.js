@@ -212,7 +212,9 @@ const DEFAULT_STATE = {
     { id: 'tx_984320', student: 'Kevin Zhao', item: 'Certification Voucher: Full Stack', magnitude: 80, commissionRate: 8.5, fee: 127, gross: 1499, status: 'Settled' },
     { id: 'tx_984319', student: 'Maria Garcia', item: '1:1 Session with Marcus Vance', magnitude: 95, commissionRate: 9.6, fee: 173, gross: 1973, status: 'Settled' }
   ],
-  activePeerRoadmapId: 'sarah'
+  activePeerRoadmapId: 'sarah',
+  enrolledVouchers: [],
+  userNotifications: []
 };
 
 class SkillCraftApp {
@@ -226,7 +228,11 @@ class SkillCraftApp {
     try {
       const saved = localStorage.getItem('skillcraft_state_v1');
       if (saved) {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        // Migrate older saved states
+        if (!parsed.enrolledVouchers) parsed.enrolledVouchers = [];
+        if (!parsed.userNotifications) parsed.userNotifications = [];
+        return parsed;
       }
     } catch (e) {
       console.warn('Failed to parse saved state, using default', e);
@@ -256,6 +262,36 @@ class SkillCraftApp {
     this.renderNotifications();
     this.setupKeyboardShortcuts();
     this.updateIcons();
+  }
+
+  getInitials(name) {
+    const parts = (name || '').trim().split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return '?';
+    if (parts.length === 1) return parts[0][0].toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+
+  renderAvatars() {
+    const prof = this.state.userProfile;
+    prof.initials = this.getInitials(prof.name);
+    document.querySelectorAll('.user-initials').forEach(el => { el.textContent = prof.initials; });
+    document.querySelectorAll('.dock-profile-avatar').forEach(el => { el.title = prof.name; });
+  }
+
+  populateEditProfileForm() {
+    const p = this.state.userProfile;
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+    set('edit-name', p.name);
+    set('edit-target-role', p.targetRole);
+    set('edit-bio', p.bio);
+    set('edit-github', p.github);
+    set('edit-portfolio', p.portfolio);
+  }
+
+  addNotification(title, desc) {
+    this.state.userNotifications.unshift({ title, desc, time: 'Just now', unread: true });
+    this.state.userNotifications = this.state.userNotifications.slice(0, 10);
+    this.renderNotifications();
   }
 
   updateIcons() {
@@ -394,6 +430,8 @@ class SkillCraftApp {
   renderStudentDashboard() {
     const prof = this.state.userProfile;
     document.getElementById('profile-display-name').textContent = prof.name;
+    this.renderAvatars();
+    this.renderUpcomingSession();
     document.getElementById('profile-display-role').textContent = `Target Role: ${prof.targetRole} • ${prof.education}`;
     document.getElementById('card-streak-count').textContent = `${prof.streak} Days`;
     document.getElementById('card-badges-count').textContent = `${prof.verifiedBadges.length} Badges`;
@@ -425,6 +463,23 @@ class SkillCraftApp {
     }
   }
 
+  renderUpcomingSession() {
+    const card = document.getElementById('upcoming-session-card');
+    if (!card) return;
+    const s = this.state.bookedSessions[0];
+    if (!s) {
+      card.innerHTML = '<div style="font-size: 0.82rem; color: var(--text-muted);">No sessions registered yet. Book a 1:1 session to get started.</div>';
+      return;
+    }
+    const when = s.scheduledFor || 'Tomorrow, 6:00 PM IST';
+    card.innerHTML = `
+      <div style="font-weight: 700; font-size: 0.85rem; color: var(--dark-primary);">Upcoming Session: ${s.topic}</div>
+      <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem;">With ${s.mentorName} • ${when}</div>
+      <div style="font-size: 0.75rem; color: #15803D; font-weight: 700; margin-top: 0.4rem;">
+        Paid ₹${s.totalPaid.toLocaleString()} (Base ₹${s.baseRate.toLocaleString()} + Dynamic Fee ${s.commissionPercent}% ₹${s.commissionAmount}) • ${s.status}
+      </div>`;
+  }
+
   updateSkillSlider(skillName, newVal) {
     const num = parseInt(newVal, 10);
     this.state.userProfile.skills[skillName] = num;
@@ -448,7 +503,8 @@ class SkillCraftApp {
   }
 
   saveProfileChanges() {
-    this.state.userProfile.name = document.getElementById('edit-name').value;
+    const newName = document.getElementById('edit-name').value.trim();
+    if (newName) this.state.userProfile.name = newName;
     this.state.userProfile.targetRole = document.getElementById('edit-target-role').value;
     this.state.userProfile.bio = document.getElementById('edit-bio').value;
     this.state.userProfile.github = document.getElementById('edit-github').value;
@@ -456,6 +512,9 @@ class SkillCraftApp {
 
     this.saveState();
     this.renderStudentDashboard();
+    this.renderLeaderboard();
+    this.renderRecruiterCandidateTable();
+    this.populateEditProfileForm();
     this.closeModal('edit-profile-modal');
     this.showToast('Student profile and career target updated successfully!');
   }
@@ -814,6 +873,11 @@ class SkillCraftApp {
     document.getElementById('razorpay-body-content').style.display = 'block';
     document.getElementById('razorpay-processing-state').classList.remove('show');
     document.getElementById('razorpay-success-state').classList.remove('show');
+    const regCard = document.getElementById('success-registration-card');
+    if (regCard) regCard.style.display = 'none';
+    const t = document.getElementById('success-title'); if (t) t.textContent = 'Payment Successful!';
+    const d = document.getElementById('success-confirmation-desc'); if (d) d.textContent = 'Your transaction has been securely confirmed by Razorpay.';
+    const dl = document.getElementById('success-done-label'); if (dl) dl.textContent = 'Done & Return';
 
     this.openModal('razorpay-modal');
   }
@@ -860,7 +924,9 @@ class SkillCraftApp {
       successState.classList.add('show');
 
       const payId = 'pay_' + Math.random().toString(36).substr(2, 9);
-      const grossAmount = this.pendingPayment ? this.pendingPayment.totalAmount : 1593;
+      const grossAmount = this.pendingPayment
+        ? (this.pendingPayment.totalAmount ?? this.pendingPayment.price ?? 1593)
+        : 1593;
 
       document.getElementById('success-pay-id').textContent = payId;
       document.getElementById('success-pay-amount').textContent = `₹${grossAmount.toLocaleString()}`;
@@ -876,9 +942,12 @@ class SkillCraftApp {
           commissionPercent: this.pendingPayment.commissionPercent,
           commissionAmount: this.pendingPayment.commissionAmount,
           totalPaid: this.pendingPayment.totalAmount,
-          status: 'Confirmed'
+          status: 'Registered',
+          scheduledFor: this.getNextSlotLabel()
         };
         this.state.bookedSessions.unshift(newSession);
+        this.showRegistrationConfirmation('session', newSession);
+        this.addNotification('1:1 Session Registered', `${newSession.topic} with ${newSession.mentorName} • ${newSession.scheduledFor}`);
 
         // Record in Admin financial log
         this.state.adminFinancialLogs.unshift({
@@ -894,6 +963,7 @@ class SkillCraftApp {
 
         this.saveState();
         this.render1on1Sessions();
+        this.renderUpcomingSession();
         this.renderAdminPortal();
       } else if (this.pendingPayment && this.pendingPayment.type === 'marketplace_voucher') {
         // Record course purchase
@@ -907,19 +977,60 @@ class SkillCraftApp {
           gross: this.pendingPayment.price,
           status: 'Settled'
         });
+        if (!this.state.enrolledVouchers.includes(this.pendingPayment.voucherId)) {
+          this.state.enrolledVouchers.push(this.pendingPayment.voucherId);
+        }
         this.state.userProfile.verifiedBadges.push(`${this.pendingPayment.title} (Voucher Active)`);
+        this.showRegistrationConfirmation('course', this.pendingPayment);
+        this.addNotification('Course Registered', `You're registered for ${this.pendingPayment.title}.`);
         this.saveState();
         this.renderStudentDashboard();
+        this.renderMarketplace();
         this.renderAdminPortal();
       }
 
-      this.showToast('Razorpay Payment Succeeded! Confirmation stored in ledger.');
+      this.showToast(this.pendingPayment && this.pendingPayment.type === '1on1_session'
+        ? '1:1 session registered successfully!'
+        : this.pendingPayment && this.pendingPayment.type === 'marketplace_voucher'
+          ? 'Course registered successfully!'
+          : 'Payment succeeded!');
     }, 1800);
   }
 
+  getNextSlotLabel() {
+    const d = new Date();
+    d.setDate(d.getDate() + 2);
+    const day = d.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+    return `${day}, 6:00 PM IST`;
+  }
+
+  showRegistrationConfirmation(kind, data) {
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+    const card = document.getElementById('success-registration-card');
+    if (card) card.style.display = 'block';
+
+    if (kind === 'session') {
+      set('success-title', 'Session Registered!');
+      set('success-confirmation-desc', 'Your payment is confirmed and your 1:1 learning session is booked.');
+      set('success-registration-label', '1:1 SESSION REGISTERED');
+      set('success-registration-title', data.topic);
+      set('success-registration-detail', `With ${data.mentorName} • ${data.scheduledFor} • Ref ${data.id}`);
+      set('success-done-label', 'View My Sessions');
+    } else {
+      set('success-title', 'Course Registered!');
+      set('success-confirmation-desc', 'Your payment is confirmed and you are now registered for this course.');
+      set('success-registration-label', 'COURSE REGISTERED');
+      set('success-registration-title', data.title);
+      set('success-registration-detail', 'Added to your learning list • Certification voucher active');
+      set('success-done-label', 'Back to Marketplace');
+    }
+  }
+
   dismissPaymentSuccess() {
+    const type = this.pendingPayment ? this.pendingPayment.type : null;
     this.closeModal('razorpay-modal');
     this.pendingPayment = null;
+    if (type === '1on1_session') this.switchPortal('student', 'sessions');
   }
 
   // =========================================================================
@@ -941,10 +1052,15 @@ class SkillCraftApp {
           ${v.tags.map(t => `<span class="badge badge-dark" style="font-size: 0.7rem;">${t}</span>`).join('')}
         </div>
         <div style="margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
+          ${this.state.enrolledVouchers.includes(v.id) ? `
+          <button class="btn-secondary" style="width: 100%; cursor: default; color: #15803D; border-color: #BBF7D0; background: #F0FDF4;" disabled>
+            <i data-lucide="check-circle" class="icon-svg"></i>
+            <span>Registered</span>
+          </button>` : `
           <button class="btn-yellow" style="width: 100%;" onclick="app.purchaseVoucher('${v.id}')">
             <i data-lucide="shopping-cart" class="icon-svg"></i>
             <span>Purchase with Razorpay</span>
-          </button>
+          </button>`}
         </div>
       </div>
     `).join('');
@@ -955,6 +1071,10 @@ class SkillCraftApp {
   purchaseVoucher(voucherId) {
     const v = this.state.marketplaceVouchers.find(i => i.id === voucherId);
     if (!v) return;
+    if (this.state.enrolledVouchers.includes(v.id)) {
+      this.showToast('You are already registered for this course.');
+      return;
+    }
 
     this.pendingPayment = {
       type: 'marketplace_voucher',
@@ -977,7 +1097,7 @@ class SkillCraftApp {
       { rank: 1, name: 'Sarah Chen', role: 'Full Stack Dev', badges: 6, streak: 45, xp: 4890 },
       { rank: 2, name: 'Marcus Vance', role: 'Backend Eng', badges: 5, streak: 38, xp: 4210 },
       { rank: 3, name: 'Elena Rostova', role: 'Frontend Eng', badges: 5, streak: 31, xp: 3950 },
-      { rank: 4, name: 'Alex Rivera (You)', role: this.state.userProfile.targetRole, badges: this.state.userProfile.verifiedBadges.length, streak: this.state.userProfile.streak, xp: this.state.userProfile.xp, isUser: true },
+      { rank: 4, name: `${this.state.userProfile.name} (You)`, role: this.state.userProfile.targetRole, badges: this.state.userProfile.verifiedBadges.length, streak: this.state.userProfile.streak, xp: this.state.userProfile.xp, isUser: true },
       { rank: 5, name: 'Aarav Patel', role: 'AI Platform Eng', badges: 4, streak: 22, xp: 3100 },
       { rank: 6, name: 'David Kim', role: 'Frontend Specialist', badges: 3, streak: 19, xp: 2750 },
       { rank: 7, name: 'Priya Sharma', role: 'Backend Apprentice', badges: 3, streak: 14, xp: 2420 }
@@ -1352,7 +1472,11 @@ class SkillCraftApp {
       }
     ];
 
-    container.innerHTML = notifs.map(n => `
+    const allNotifs = [...this.state.userNotifications, ...notifs];
+    const badge = document.getElementById('notification-badge-count');
+    if (badge) badge.textContent = allNotifs.filter(n => n.unread).length;
+
+    container.innerHTML = allNotifs.map(n => `
       <div class="notification-item ${n.unread ? 'unread' : ''}">
         <i data-lucide="${n.unread ? 'bell-ring' : 'bell'}" class="icon-svg" style="stroke: ${n.unread ? '#EAB308' : '#94A3B8'};"></i>
         <div>
@@ -1466,6 +1590,7 @@ class SkillCraftApp {
   // =========================================================================
   openModal(modalId) {
     const modal = document.getElementById(modalId);
+    if (modalId === 'edit-profile-modal') this.populateEditProfileForm();
     if (modal) modal.classList.add('show');
     this.updateIcons();
   }

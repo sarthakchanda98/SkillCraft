@@ -43,7 +43,7 @@
 
       <!-- Profile Avatar -->
       <div class="dock-profile-avatar" onclick="app.toggleProfileMenu()" title="Alex Rivera (Active User)">
-        <span>AR</span>
+        <span class="user-initials">AR</span>
         <div class="status-online-dot"></div>
       </div>
     </div>
@@ -64,7 +64,7 @@
         <!-- Hero Profile Banner -->
         <div class="student-hero-banner">
           <div class="student-hero-profile">
-            <div class="student-avatar-large">AR</div>
+            <div class="student-avatar-large user-initials">AR</div>
             <div class="student-hero-info">
               <h2>
                 <span id="profile-display-name">Alex Rivera</span>
@@ -219,7 +219,7 @@
             <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1rem;">
               Book 1:1 live pairing sessions with senior peers. SkillCraft takes a dynamic platform commission (2.5% to 10%) based on skill magnitude.
             </p>
-            <div style="background: var(--bg-surface-subtle); border-radius: var(--radius-md); padding: 0.85rem; border-left: 3px solid var(--accent-yellow);">
+            <div id="upcoming-session-card" style="background: var(--bg-surface-subtle); border-radius: var(--radius-md); padding: 0.85rem; border-left: 3px solid var(--accent-yellow);">
               <div style="font-weight: 700; font-size: 0.85rem; color: var(--dark-primary);">Upcoming Session: Node.js Architecture Review</div>
               <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem;">With Sarah Chen • Tomorrow, 6:00 PM IST</div>
               <div style="font-size: 0.75rem; color: #15803D; font-weight: 700; margin-top: 0.4rem;">
@@ -843,10 +843,16 @@
         <div class="success-checkmark-circle">
           <i data-lucide="check" style="width: 38px; height: 38px; stroke-width: 3;"></i>
         </div>
-        <h3 style="font-weight: 800; font-size: 1.4rem; color: var(--dark-primary);">Payment Successful!</h3>
+        <h3 id="success-title" style="font-weight: 800; font-size: 1.4rem; color: var(--dark-primary);">Payment Successful!</h3>
         <p style="color: var(--text-secondary); font-size: 0.88rem; margin-top: 0.35rem;" id="success-confirmation-desc">
           Your transaction has been securely confirmed by Razorpay.
         </p>
+
+        <div id="success-registration-card" style="display: none; background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: var(--radius-md); padding: 0.85rem 1rem; width: 100%; margin-top: 1.1rem; text-align: left;">
+          <div style="font-size: 0.7rem; font-weight: 800; color: #15803D; letter-spacing: 0.04em;" id="success-registration-label">REGISTERED</div>
+          <div style="font-weight: 800; font-size: 0.92rem; color: var(--dark-primary); margin-top: 0.2rem;" id="success-registration-title"></div>
+          <div style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.2rem;" id="success-registration-detail"></div>
+        </div>
 
         <div style="background: var(--bg-surface-subtle); border-radius: var(--radius-md); padding: 1rem; width: 100%; margin: 1.25rem 0; text-align: left; font-size: 0.8rem;">
           <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
@@ -864,7 +870,7 @@
         </div>
 
         <button class="btn-primary" style="width: 100%;" onclick="app.dismissPaymentSuccess()">
-          <span>Done & Return</span>
+          <span id="success-done-label">Done & Return</span>
         </button>
       </div>
     </div>
@@ -1289,7 +1295,7 @@
 
         <!-- User Profile Avatar with options -->
         <div class="dock-profile-avatar" onclick="app.toggleProfileMenu()" title="Alex Rivera">
-          <span>AR</span>
+          <span class="user-initials">AR</span>
           <div class="status-online-dot"></div>
         </div>
       </div>
