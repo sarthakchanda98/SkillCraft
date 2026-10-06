@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillCraft | Modern Peer-to-Peer Career Learning & Matching Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Lucide Icons via CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- =========================================================================
+       TOP HEADER BAR
+       ========================================================================= -->
+  <header class="top-header-bar">
+    <div class="header-left">
+      <div class="header-brand" onclick="app.switchPortal('student', 'dashboard')">
+        <img src="logo.png" alt="SkillCraft Logo" class="header-logo">
+      </div>
+      <div class="header-role-badge" id="header-active-role-badge">
+        <i data-lucide="graduation-cap" class="icon-svg"></i>
+        <span id="header-role-text">STUDENT PORTAL</span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <!-- Search Trigger -->
+      <div class="search-trigger-bar" onclick="app.openModal('search-modal')">
+        <i data-lucide="search" class="icon-svg"></i>
+        <span>Search peers, skills, jobs...</span>
+        <span class="search-kbd">Ctrl K</span>
+      </div>
+
+      <!-- Quick Action Button (Role dependent) -->
+      <button class="btn-yellow btn-sm" id="header-quick-action-btn" onclick="app.handleHeaderAction()">
+        <i data-lucide="award" class="icon-svg"></i>
+        <span id="header-quick-action-text">Verify My Skills</span>
+      </button>
+
+      <!-- Profile Avatar -->
+      <div class="dock-profile-avatar" onclick="app.toggleProfileMenu()" title="Alex Rivera (Active User)">
+        <span>AR</span>
+        <div class="status-online-dot"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       MAIN APPLICATION CONTENT (ROLE PORTALS)
+       ========================================================================= -->
+  <main class="main-wrapper">
+
+    <!-- =======================================================================
+         PORTAL 1: STUDENT PORTAL (PRIMARY EMPHASIS)
+         ======================================================================= -->
+    <div id="student-portal" class="portal-view active">
+
+      <!-- SUBTAB 1: STUDENT DASHBOARD & PROFILE -->
+      <div id="tab-student-dashboard" class="tab-content active">
+        <!-- Hero Profile Banner -->
+        <div class="student-hero-banner">
+          <div class="student-hero-profile">
+            <div class="student-avatar-large">AR</div>
+            <div class="student-hero-info">
+              <h2>
+                <span id="profile-display-name">Alex Rivera</span>
+                <span class="badge badge-yellow">Level 4 Scholar</span>
+              </h2>
+              <p class="student-hero-tagline" id="profile-display-role">Target Role: Junior Full Stack Developer • B.Tech Computer Science</p>
+              <div class="student-hero-badges">
+                <span class="badge badge-dark">
+                  <i data-lucide="check-circle" class="icon-svg" style="stroke: #10B981;"></i>
+                  <span>SQL Intermediate (Verified)</span>
+                </span>
+                <span class="badge badge-dark">
+                  <i data-lucide="check-circle" class="icon-svg" style="stroke: #10B981;"></i>
+                  <span>React Fundamentals (Verified)</span>
+                </span>
+                <span class="badge badge-dark">
+                  <i data-lucide="git-branch" class="icon-svg" style="stroke: #EAB308;"></i>
+                  <span>Git & GitHub Pro</span>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <button class="btn-secondary" onclick="app.openModal('edit-profile-modal')">
+              <i data-lucide="edit-3" class="icon-svg"></i>
+              <span>Edit Profile</span>
+            </button>
+            <button class="btn-yellow" onclick="app.openModal('assessment-modal')">
+              <i data-lucide="shield-check" class="icon-svg"></i>
+              <span>Take Verified Assessment</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Student Key Metrics -->
+        <div class="grid-4" style="margin-bottom: 2rem;">
+          <div class="stat-card">
+            <div class="stat-icon-box">
+              <i data-lucide="zap" class="icon-svg"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Daily Streak</div>
+              <div class="stat-value" id="card-streak-count">12 Days</div>
+              <div class="stat-trend">
+                <i data-lucide="arrow-up-right" class="icon-svg"></i>
+                <span>Active Today</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-box">
+              <i data-lucide="award" class="icon-svg"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Verified Badges</div>
+              <div class="stat-value" id="card-badges-count">3 Badges</div>
+              <div class="stat-trend">
+                <i data-lucide="arrow-up-right" class="icon-svg"></i>
+                <span>Proof-of-Work verified</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-box">
+              <i data-lucide="trending-up" class="icon-svg"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Activity XP</div>
+              <div class="stat-value" id="card-xp-count">1,850 XP</div>
+              <div class="stat-trend">
+                <i data-lucide="arrow-up-right" class="icon-svg"></i>
+                <span>Rank #14 Cohort</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-box">
+              <i data-lucide="briefcase" class="icon-svg"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Recruiter Fit Score</div>
+              <div class="stat-value" id="card-recruiter-fit">78% Match</div>
+              <div class="stat-trend">
+                <i data-lucide="arrow-up-right" class="icon-svg"></i>
+                <span>Updated in real-time</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Skills Vectors (Interactive Real-time Sliders) -->
+        <div class="card" style="margin-bottom: 2rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <h3 style="font-weight: 800; font-size: 1.25rem;">My Verified Skill Matrix & Sliders</h3>
+              <p style="color: var(--text-muted); font-size: 0.88rem;">Adjust sliders to update your skill vector. This dynamically recalculates recruiter match scores and peer roadmap gap deltas!</p>
+            </div>
+            <span class="badge badge-yellow">Live Vector Engine</span>
+          </div>
+
+          <div class="grid-3" id="skills-sliders-container">
+            <!-- Injected via JavaScript -->
+          </div>
+        </div>
+
+        <!-- Two Column Section: Active Roadmap & Recent Activity -->
+        <div class="grid-2">
+          <!-- Active Roadmap Card -->
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <h4 style="font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <i data-lucide="map" class="icon-svg"></i>
+                <span>Active Target Roadmap</span>
+              </h4>
+              <button class="btn-sm btn-secondary" onclick="app.switchPortal('student', 'roadmaps')">
+                <span>View Full Path</span>
+                <i data-lucide="arrow-right" class="icon-svg"></i>
+              </button>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1rem;">
+              Targeting: <strong>Sarah Chen</strong> (Junior Dev @ TechCorp). Current overall gap delta: <strong>+48%</strong>
+            </p>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700;">
+                <span>Phase 2: Production REST Backend with Node.js</span>
+                <span>65% Done</span>
+              </div>
+              <div style="height: 8px; background: #E2E8F0; border-radius: 4px; overflow: hidden;">
+                <div style="width: 65%; height: 100%; background: var(--dark-primary); border-radius: 4px;"></div>
+              </div>
+              <div style="font-size: 0.78rem; color: var(--text-muted); display: flex; justify-content: space-between;">
+                <span>Next Milestone: Replicate E-commerce Microservice Blueprint</span>
+                <span style="font-weight: 700; color: var(--accent-yellow-hover);">Due in 4 days</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mentorship & 1:1 Sessions Quick Card -->
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <h4 style="font-weight: 800; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+                <i data-lucide="video" class="icon-svg"></i>
+                <span>1:1 Peer Mentorship Hub</span>
+              </h4>
+              <button class="btn-sm btn-yellow" onclick="app.switchPortal('student', 'sessions')">
+                <span>Book Session</span>
+              </button>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1rem;">
+              Book 1:1 live pairing sessions with senior peers. SkillCraft takes a dynamic platform commission (2.5% to 10%) based on skill magnitude.
+            </p>
+            <div style="background: var(--bg-surface-subtle); border-radius: var(--radius-md); padding: 0.85rem; border-left: 3px solid var(--accent-yellow);">
+              <div style="font-weight: 700; font-size: 0.85rem; color: var(--dark-primary);">Upcoming Session: Node.js Architecture Review</div>
+              <div style="font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem;">With Sarah Chen • Tomorrow, 6:00 PM IST</div>
+              <div style="font-size: 0.75rem; color: #15803D; font-weight: 700; margin-top: 0.4rem;">
+                Paid ₹1,593 (Base ₹1,500 + Dynamic Fee 6.2% ₹93) • Confirmed
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBTAB 2: PEER-TO-PEER DYNAMIC ROADMAP GENERATOR -->
+      <div id="tab-student-roadmaps" class="tab-content">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">Peer-to-Peer Dynamic Roadmap Generator</h2>
+            <p class="page-subtitle">Benchmark your skill vector directly against senior alumni and landed-intern peers. Our simulated AI engine calculates disparity deltas and generates custom milestone roadmaps.</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn-secondary" onclick="app.filterPeers('all')">All Peers</button>
+            <button class="btn-secondary" onclick="app.filterPeers('Full Stack')">Full Stack</button>
+            <button class="btn-secondary" onclick="app.filterPeers('Backend')">Backend</button>
+            <button class="btn-secondary" onclick="app.filterPeers('Frontend')">Frontend</button>
+          </div>
+        </div>
+
+        <!-- Peer Discovery Feed -->
+        <div class="grid-3" id="peer-discovery-grid">
+          <!-- Rendered via JavaScript -->
+        </div>
+
+        <!-- Dynamic Roadmap Comparison Output Container -->
+        <div id="roadmap-output-section" class="roadmap-result-container" style="display: none;">
+          <div class="roadmap-header-hero">
+            <div>
+              <span class="badge badge-yellow" style="margin-bottom: 0.5rem;">Simulated AI Vector Delta</span>
+              <h3 id="roadmap-peer-target-title" style="font-size: 1.5rem; font-weight: 800;">My Skill Profile vs. Sarah Chen (Junior Dev @ TechCorp)</h3>
+              <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem;">
+                Calculated skill disparity vectors across 5 core competencies. Weekly learning blueprint generated.
+              </p>
+            </div>
+            <div style="display: flex; gap: 0.75rem;">
+              <button class="btn-secondary" onclick="app.openBlueprintModal()">
+                <i data-lucide="layers" class="icon-svg"></i>
+                <span>Inspect Project Blueprint</span>
+              </button>
+              <button class="btn-yellow" onclick="app.openBookingModalForCurrentPeer()">
+                <i data-lucide="calendar" class="icon-svg"></i>
+                <span>Book 1:1 Session (Dynamic Fee)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Delta Comparison Bars -->
+          <h4 style="font-weight: 800; font-size: 1.1rem; margin-bottom: 1.25rem;">Skill Disparity Vectors & Required Deltas</h4>
+          <div id="roadmap-delta-rows" style="margin-bottom: 2.5rem;">
+            <!-- Injected via JavaScript -->
+          </div>
+
+          <!-- Weekly Learning Path Milestones -->
+          <h4 style="font-weight: 800; font-size: 1.1rem; margin-bottom: 1.25rem;">Synthesized Step-by-Step Learning Path</h4>
+          <div class="timeline-wrapper" id="roadmap-milestones-timeline">
+            <!-- Injected via JavaScript -->
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBTAB 3: 1:1 LEARNING SESSIONS & DYNAMIC COMMISSION -->
+      <div id="tab-student-sessions" class="tab-content">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">1:1 Peer Mentorship & Live Learning Sessions</h2>
+            <p class="page-subtitle">Learn directly from verified senior peers. SkillCraft calculates a dynamic commission (min 2.5% to max 10%) based on the complexity magnitude of the skill being learned.</p>
+          </div>
+          <button class="btn-yellow" onclick="app.openBookingModal()">
+            <i data-lucide="plus-circle" class="icon-svg"></i>
+            <span>Book New 1:1 Session</span>
+          </button>
+        </div>
+
+        <!-- Dynamic Commission Explanation Card -->
+        <div class="commission-calculator-box">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <div class="badge badge-dark" style="margin-bottom: 0.5rem;">Dynamic Fee Architecture</div>
+              <h3 style="font-weight: 800; font-size: 1.2rem; color: #78350F;">Transparent Magnitude-Based Commission Engine</h3>
+              <p style="font-size: 0.88rem; color: #92400E; max-width: 700px; margin-top: 0.25rem;">
+                We charge a dynamic platform commission ranging strictly between <strong>2.5% (Foundational Skills)</strong> and <strong>10.0% (High-Magnitude Distributed Architectures)</strong>. This fee funds real-time collaborative sandboxes, recorded session clouds, and native proof-of-work badges.
+              </p>
+            </div>
+            <div style="background: #FFFFFF; padding: 0.75rem 1.25rem; border-radius: var(--radius-md); border: 1px solid #FDE68A;">
+              <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Platform Formula</div>
+              <div style="font-weight: 800; font-size: 1.05rem; color: var(--dark-primary); margin-top: 0.15rem;">
+                Fee % = 2.5% + ((Skill Magnitude / 100) × 7.5%)
+              </div>
+            </div>
+          </div>
+
+          <div class="commission-breakdown-grid">
+            <div class="commission-stat">
+              <span class="commission-stat-label">Minimum Fee (Magnitude 1-20)</span>
+              <span class="commission-stat-val">2.5% - 4.0%</span>
+              <span style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;">HTML/CSS, Basic Git, Syntax Review</span>
+            </div>
+            <div class="commission-stat">
+              <span class="commission-stat-label">Mid-tier Fee (Magnitude 40-70)</span>
+              <span class="commission-stat-val">5.5% - 7.7%</span>
+              <span style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;">Full-Stack React, REST APIs, SQL Queries</span>
+            </div>
+            <div class="commission-stat">
+              <span class="commission-stat-label">Maximum Fee (Magnitude 80-100)</span>
+              <span class="commission-stat-val">8.5% - 10.0%</span>
+              <span style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.2rem;">Microservices, Distributed Systems, Cloud K8s</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mentors Available for 1:1 Sessions -->
+        <h3 style="font-weight: 800; font-size: 1.25rem; margin-bottom: 1.25rem;">Available Peer Mentors & Tutors</h3>
+        <div class="grid-3" id="mentors-grid-container">
+          <!-- Rendered via JS -->
+        </div>
+
+        <!-- My Booked Sessions Table -->
+        <div class="card" style="margin-top: 2rem;">
+          <h3 style="font-weight: 800; font-size: 1.15rem; margin-bottom: 1rem;">My 1:1 Learning Sessions History</h3>
+          <div style="overflow-x: auto;">
+            <table class="leaderboard-table" id="my-sessions-table">
+              <thead>
+                <tr>
+                  <th>Session ID</th>
+                  <th>Peer Mentor</th>
+                  <th>Skill Topic</th>
+                  <th>Magnitude</th>
+                  <th>Base Rate</th>
+                  <th>Dynamic Commission</th>
+                  <th>Total Paid</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="my-sessions-tbody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUBTAB 4: LEARNING MARKETPLACE & VOUCHERS -->
+      <div id="tab-student-marketplace" class="tab-content">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">Learning Marketplace & Certification Vouchers</h2>
+            <p class="page-subtitle">Curated premium learning pathways and verified certification vouchers with integrated simulated Razorpay checkout.</p>
+          </div>
+        </div>
+
+        <div class="grid-3" id="marketplace-courses-grid">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+
+      <!-- SUBTAB 5: GAMIFIED LEADERBOARDS & DAILY STREAK -->
+      <div id="tab-student-leaderboard" class="tab-content">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">SkillCraft Gamified Leaderboards</h2>
+            <p class="page-subtitle">Rankings based on verified skill assessments, peer capstone completions, and daily activity streaks.</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn-primary" onclick="app.filterLeaderboard('global')">Global Top 50</button>
+            <button class="btn-secondary" onclick="app.filterLeaderboard('cohort')">Full-Stack Cohort</button>
+            <button class="btn-secondary" onclick="app.openModal('streak-modal')">
+              <i data-lucide="zap" class="icon-svg" style="stroke: #EAB308;"></i>
+              <span>Daily Check-In</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="overflow-x: auto;">
+            <table class="leaderboard-table" id="leaderboard-main-table">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Student Name</th>
+                  <th>Target Role</th>
+                  <th>Verified Badges</th>
+                  <th>Activity Streak</th>
+                  <th>Activity Points</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboard-table-tbody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- End Student Portal -->
+
+
+    <!-- =======================================================================
+         PORTAL 2: COMPANY / RECRUITER PORTAL
+         ======================================================================= -->
+    <div id="recruiter-portal" class="portal-view">
+
+      <!-- SUBTAB 1: RECRUITER CANDIDATE MATCHING ENGINE -->
+      <div id="tab-recruiter-matching" class="tab-content active">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">Automated Candidate Matching Engine</h2>
+            <p class="page-subtitle">Simulated AI talent matching algorithm. Evaluates candidate skill vectors against job requirements with custom weighting.</p>
+          </div>
+          <button class="btn-yellow" onclick="app.openModal('post-job-modal')">
+            <i data-lucide="plus" class="icon-svg"></i>
+            <span>Post New Job Listing</span>
+          </button>
+        </div>
+
+        <!-- Active Jobs Filter Selector -->
+        <div class="card" style="margin-bottom: 2rem;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Active Job Posting Evaluator</div>
+              <h3 style="font-weight: 800; font-size: 1.2rem; margin-top: 0.2rem;" id="recruiter-active-job-title">Role: Junior Full Stack Developer (React / Node / SQL)</h3>
+            </div>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+              <span style="font-size: 0.85rem; font-weight: 600;">Switch Role:</span>
+              <select id="recruiter-job-select" onchange="app.switchRecruiterJob(this.value)" style="padding: 0.5rem 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); font-weight: 700;">
+                <option value="job-1">Junior Full Stack Developer</option>
+                <option value="job-2">Backend Platform Engineer</option>
+                <option value="job-3">Frontend Engineer (Next.js)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Weighted Skill Criteria Tags -->
+          <div style="margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border-subtle);">
+            <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 0.6rem;">Weighted Skill Criteria for this Listing:</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;" id="recruiter-job-weights-container">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Matched Candidate Rankings Table -->
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+            <h3 style="font-weight: 800; font-size: 1.2rem;">Matched Candidate Pool & Match Scores</h3>
+            <span class="badge badge-yellow">Simulated Vector Algorithm</span>
+          </div>
+
+          <div style="overflow-x: auto;">
+            <table class="leaderboard-table">
+              <thead>
+                <tr>
+                  <th>Match Priority</th>
+                  <th>Candidate</th>
+                  <th>Match Score</th>
+                  <th>Verified Badges</th>
+                  <th>Key Strengths</th>
+                  <th>Skill Gap Identified</th>
+                  <th>Recruiter Action</th>
+                </tr>
+              </thead>
+              <tbody id="recruiter-candidates-tbody">
+                <!-- Rendered dynamically via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- End Recruiter Portal -->
+
+
+    <!-- =======================================================================
+         PORTAL 3: INSTRUCTOR PORTAL
+         ======================================================================= -->
+    <div id="instructor-portal" class="portal-view">
+      <div id="tab-instructor-courses" class="tab-content active">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">Instructor Portal & Assessment Studio</h2>
+            <p class="page-subtitle">Publish multimedia courses, design verified skill quizzes, and monitor revenue payouts with automated platform commission logs.</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn-secondary" onclick="app.openModal('quiz-builder-modal')">
+              <i data-lucide="file-question" class="icon-svg"></i>
+              <span>Quiz & Assessment Builder</span>
+            </button>
+            <button class="btn-yellow" onclick="app.openModal('create-course-modal')">
+              <i data-lucide="plus-circle" class="icon-svg"></i>
+              <span>Create New Course</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Instructor Earnings Overview -->
+        <div class="grid-4" style="margin-bottom: 2rem;">
+          <div class="stat-card">
+            <div class="stat-icon-box">
+              <i data-lucide="indian-rupee" class="icon-svg"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Gross Revenue</div>
+              <div class="stat-value">₹1,84,500</div>
+              <div class="stat-trend"><i data-lucide="arrow-up-right" class="icon-svg"></i> <span>+18% this month</span></div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-box">
+              <i data-lucide="percent" class="icon-svg"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Platform Fees (Dynamic)</div>
+              <div class="stat-value">₹13,200</div>
+              <div class="stat-trend"><span>Avg. 6.4% commission</span></div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-box">
+              <i data-lucide="check-circle-2" class="icon-svg"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Net Instructor Payout</div>
+              <div class="stat-value">₹1,71,300</div>
+              <div class="stat-trend" style="color: #10B981;"><span>Ready for Payout</span></div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-box">
+              <i data-lucide="users" class="icon-svg"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Enrolled Students</div>
+              <div class="stat-value">648</div>
+              <div class="stat-trend"><span>92% completion rate</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Instructor Courses List -->
+        <div class="card">
+          <h3 style="font-weight: 800; font-size: 1.2rem; margin-bottom: 1.25rem;">My Authored Curriculum & Assessment Modules</h3>
+          <div class="grid-3" id="instructor-courses-grid">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+      </div>
+    </div><!-- End Instructor Portal -->
+
+
+    <!-- =======================================================================
+         PORTAL 4: ADMIN DASHBOARD
+         ======================================================================= -->
+    <div id="admin-portal" class="portal-view">
+      <div id="tab-admin-analytics" class="tab-content active">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">Admin Dashboard & Operations Console</h2>
+            <p class="page-subtitle">Real-time platform governance, user approvals, course moderation, and dynamic commission audit logs.</p>
+          </div>
+          <button class="btn-secondary" onclick="app.refreshAdminData()">
+            <i data-lucide="refresh-cw" class="icon-svg"></i>
+            <span>Refresh Telemetry</span>
+          </button>
+        </div>
+
+        <!-- Admin Global Stats -->
+        <div class="grid-4" style="margin-bottom: 2rem;">
+          <div class="stat-card">
+            <div class="stat-icon-box">
+              <i data-lucide="users" class="icon-svg"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Total Active Students</div>
+              <div class="stat-value">14,820</div>
+              <div class="stat-trend"><span>+340 this week</span></div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-box">
+              <i data-lucide="briefcase" class="icon-svg"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Placements Facilitated</div>
+              <div class="stat-value">842</div>
+              <div class="stat-trend" style="color: #10B981;"><span>High Priority Matches</span></div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-box">
+              <i data-lucide="trending-up" class="icon-svg"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Gross Platform Volume</div>
+              <div class="stat-value">₹32,45,000</div>
+              <div class="stat-trend"><span>Processed via Razorpay</span></div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon-box">
+              <i data-lucide="pie-chart" class="icon-svg"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-label">Platform Dynamic Rev</div>
+              <div class="stat-value">₹2,18,400</div>
+              <div class="stat-trend"><span>Dynamic 2.5% - 10.0% fee</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Two Column: User Approvals & Course Moderation Queue -->
+        <div class="grid-2" style="margin-bottom: 2rem;">
+          <!-- User Approvals -->
+          <div class="card">
+            <h3 style="font-weight: 800; font-size: 1.15rem; margin-bottom: 1rem;">User Approval & Role Controls</h3>
+            <div style="overflow-x: auto;">
+              <table class="leaderboard-table">
+                <thead>
+                  <tr>
+                    <th>User</th>
+                    <th>Role Applied</th>
+                    <th>Credentials</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-user-approvals-tbody">
+                  <!-- Injected via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Course & Job Moderation Queue -->
+          <div class="card">
+            <h3 style="font-weight: 800; font-size: 1.15rem; margin-bottom: 1rem;">Content Moderation Queue</h3>
+            <div style="overflow-x: auto;">
+              <table class="leaderboard-table">
+                <thead>
+                  <tr>
+                    <th>Submission</th>
+                    <th>Author / Org</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-moderation-tbody">
+                  <!-- Injected via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Financial & Dynamic Commission Audit Log -->
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="font-weight: 800; font-size: 1.15rem;">Live Financial & Dynamic Commission Audit Log</h3>
+            <span class="badge badge-success">Razorpay Gateway Live Feed</span>
+          </div>
+          <div style="overflow-x: auto;">
+            <table class="leaderboard-table">
+              <thead>
+                <tr>
+                  <th>Transaction ID</th>
+                  <th>Student</th>
+                  <th>Item / 1:1 Session</th>
+                  <th>Magnitude</th>
+                  <th>Commission %</th>
+                  <th>Platform Fee</th>
+                  <th>Gross Amount</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="admin-financial-audit-tbody">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div><!-- End Admin Portal -->
+
+  </main>
+
+
+  <!-- =========================================================================
+       MODALS & DRAWERS
+       ========================================================================= -->
+
+  <!-- 1. SIMULATED RAZORPAY PAYMENT MODAL -->
+  <div id="razorpay-modal" class="modal-backdrop">
+    <div class="razorpay-modal-box">
+      <!-- Razorpay Header -->
+      <div class="razorpay-header">
+        <div class="razorpay-brand">
+          <div style="background: #FFFFFF; border-radius: 4px; padding: 2px 6px;">
+            <span style="font-weight: 900; color: #0C2340; font-size: 0.9rem;">Razorpay</span>
+          </div>
+          <span class="razorpay-badge">TEST SANDBOX</span>
+        </div>
+        <div class="razorpay-amount-box">
+          <div class="razorpay-amount-label">Payable Amount</div>
+          <div class="razorpay-amount-val" id="razorpay-amount-text">₹1,593</div>
+        </div>
+      </div>
+
+      <!-- Main Payment Body -->
+      <div class="razorpay-body" id="razorpay-body-content">
+        <div style="margin-bottom: 1rem;">
+          <div style="font-weight: 700; font-size: 0.95rem; color: var(--dark-primary);" id="razorpay-item-name">1:1 Mentorship Session with Sarah Chen</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted);" id="razorpay-item-desc">SkillCraft Verified 1:1 Live Pairing (Includes dynamic commission)</div>
+        </div>
+
+        <!-- Payment Method Tabs -->
+        <div class="payment-methods-tabs">
+          <button class="payment-method-tab active" onclick="app.switchPaymentTab('upi')">
+            <i data-lucide="smartphone" class="icon-svg"></i>
+            <span>UPI / QR</span>
+          </button>
+          <button class="payment-method-tab" onclick="app.switchPaymentTab('card')">
+            <i data-lucide="credit-card" class="icon-svg"></i>
+            <span>Cards</span>
+          </button>
+          <button class="payment-method-tab" onclick="app.switchPaymentTab('netbanking')">
+            <i data-lucide="landmark" class="icon-svg"></i>
+            <span>NetBanking</span>
+          </button>
+        </div>
+
+        <!-- Tab 1: UPI -->
+        <div id="pay-view-upi" class="payment-content-view active">
+          <div style="font-size: 0.82rem; font-weight: 700; color: var(--text-secondary);">Select UPI App:</div>
+          <div class="upi-app-grid">
+            <button class="upi-app-btn selected" onclick="app.selectUpiApp(this, 'GPay')">
+              <i data-lucide="zap" class="icon-svg"></i>
+              <span>Google Pay</span>
+            </button>
+            <button class="upi-app-btn" onclick="app.selectUpiApp(this, 'PhonePe')">
+              <i data-lucide="smartphone" class="icon-svg"></i>
+              <span>PhonePe</span>
+            </button>
+            <button class="upi-app-btn" onclick="app.selectUpiApp(this, 'Paytm')">
+              <i data-lucide="shield" class="icon-svg"></i>
+              <span>Paytm</span>
+            </button>
+            <button class="upi-app-btn" onclick="app.selectUpiApp(this, 'BHIM')">
+              <i data-lucide="check-circle" class="icon-svg"></i>
+              <span>BHIM UPI</span>
+            </button>
+          </div>
+          <div style="margin: 0.75rem 0;">
+            <label style="font-size: 0.8rem; font-weight: 700; color: var(--text-secondary); display: block; margin-bottom: 0.35rem;">Or Enter UPI ID</label>
+            <input type="text" id="upi-id-input" value="alex.rivera@okhdfcbank" style="width: 100%; padding: 0.6rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);" placeholder="username@upi">
+          </div>
+        </div>
+
+        <!-- Tab 2: Cards -->
+        <div id="pay-view-card" class="payment-content-view">
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div>
+              <label style="font-size: 0.8rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Card Number</label>
+              <input type="text" value="4532 •••• •••• 8841" style="width: 100%; padding: 0.6rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;">
+              <div>
+                <label style="font-size: 0.8rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Expiry Date</label>
+                <input type="text" value="08/28" style="width: 100%; padding: 0.6rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+              </div>
+              <div>
+                <label style="font-size: 0.8rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">CVV</label>
+                <input type="password" value="•••" style="width: 100%; padding: 0.6rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: NetBanking -->
+        <div id="pay-view-netbanking" class="payment-content-view">
+          <label style="font-size: 0.8rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Select Bank</label>
+          <select style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); font-weight: 600;">
+            <option>HDFC Bank</option>
+            <option>ICICI Bank</option>
+            <option>State Bank of India</option>
+            <option>Axis Bank</option>
+            <option>Kotak Mahindra Bank</option>
+          </select>
+        </div>
+
+        <!-- Action Button -->
+        <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
+          <button class="btn-secondary" style="flex: 1;" onclick="app.closeModal('razorpay-modal')">Cancel</button>
+          <button class="btn-primary" style="flex: 2; background: #0C2340; border-color: #0C2340;" id="razorpay-pay-button" onclick="app.executePayment()">
+            <i data-lucide="lock" class="icon-svg"></i>
+            <span id="razorpay-btn-label">Pay ₹1,593</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Payment Processing Animation Overlay -->
+      <div class="payment-processing-overlay" id="razorpay-processing-state">
+        <div class="spinner"></div>
+        <h4 style="font-weight: 800; font-size: 1.2rem; color: var(--dark-primary);">Simulating Razorpay Gateway...</h4>
+        <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 0.35rem;" id="processing-status-text">Authorizing payment with bank server...</p>
+      </div>
+
+      <!-- Payment Success Overlay -->
+      <div class="payment-success-overlay" id="razorpay-success-state">
+        <div class="success-checkmark-circle">
+          <i data-lucide="check" style="width: 38px; height: 38px; stroke-width: 3;"></i>
+        </div>
+        <h3 style="font-weight: 800; font-size: 1.4rem; color: var(--dark-primary);">Payment Successful!</h3>
+        <p style="color: var(--text-secondary); font-size: 0.88rem; margin-top: 0.35rem;" id="success-confirmation-desc">
+          Your transaction has been securely confirmed by Razorpay.
+        </p>
+
+        <div style="background: var(--bg-surface-subtle); border-radius: var(--radius-md); padding: 1rem; width: 100%; margin: 1.25rem 0; text-align: left; font-size: 0.8rem;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+            <span style="color: var(--text-muted);">Payment ID:</span>
+            <span style="font-weight: 700; font-family: monospace;" id="success-pay-id">pay_k98a329h9d2</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.35rem;">
+            <span style="color: var(--text-muted);">Amount Paid:</span>
+            <span style="font-weight: 700;" id="success-pay-amount">₹1,593</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: var(--text-muted);">Platform Receipt:</span>
+            <span style="font-weight: 700; color: #10B981;">Verified & Stored</span>
+          </div>
+        </div>
+
+        <button class="btn-primary" style="width: 100%;" onclick="app.dismissPaymentSuccess()">
+          <span>Done & Return</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. 1:1 SESSION BOOKING & DYNAMIC COMMISSION MODAL -->
+  <div id="booking-modal" class="modal-backdrop">
+    <div class="card" style="max-width: 580px; width: 100%;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <h3 style="font-weight: 800; font-size: 1.3rem;">Book 1:1 Peer Learning Session</h3>
+        <button onclick="app.closeModal('booking-modal')"><i data-lucide="x" class="icon-svg"></i></button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Choose Mentor</label>
+          <select id="booking-mentor-select" onchange="app.updateCommissionCalculator()" style="width: 100%; padding: 0.65rem 0.85rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); font-weight: 600;">
+            <option value="sarah" data-rate="1500">Sarah Chen (Junior Dev @ TechCorp) - Base ₹1,500/hr</option>
+            <option value="marcus" data-rate="1800">Marcus Vance (Backend Eng @ CloudScale) - Base ₹1,800/hr</option>
+            <option value="elena" data-rate="1600">Elena Rostova (Frontend Eng @ DesignHub) - Base ₹1,600/hr</option>
+            <option value="aarav" data-rate="2200">Aarav Patel (AI Engineer @ NeoLabs) - Base ₹2,200/hr</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Session Topic</label>
+          <input type="text" id="booking-topic-input" value="Production REST APIs & Database Schema Architecture" style="width: 100%; padding: 0.65rem 0.85rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+        </div>
+
+        <!-- Interactive Skill Magnitude Slider -->
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+            <label style="font-size: 0.82rem; font-weight: 700;">Skill Complexity Magnitude (1 to 100)</label>
+            <span class="badge badge-yellow" id="booking-magnitude-badge">Magnitude: 60 (Intermediate)</span>
+          </div>
+          <input type="range" id="booking-magnitude-slider" min="1" max="100" value="60" oninput="app.updateCommissionCalculator()" class="skill-range-input">
+          <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted); margin-top: 0.25rem;">
+            <span>Level 1 (Basic / 2.5% fee)</span>
+            <span>Level 50 (Core / 6.25% fee)</span>
+            <span>Level 100 (Advanced / 10.0% fee)</span>
+          </div>
+        </div>
+
+        <!-- Dynamic Commission Calculation Display -->
+        <div class="commission-calculator-box" style="margin: 0.5rem 0;">
+          <div style="font-size: 0.78rem; font-weight: 800; color: #78350F; text-transform: uppercase;">Real-time Dynamic Commission Breakdown</div>
+          <div class="commission-breakdown-grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 0.5rem;">
+            <div class="commission-stat">
+              <span class="commission-stat-label">Mentor Base Fee</span>
+              <span class="commission-stat-val" id="calc-base-rate">₹1,500</span>
+            </div>
+            <div class="commission-stat">
+              <span class="commission-stat-label">Dynamic Platform Fee</span>
+              <span class="commission-stat-val" id="calc-commission-rate" style="color: #B45309;">7.0% (₹105)</span>
+            </div>
+            <div class="commission-stat">
+              <span class="commission-stat-label">Total Payable</span>
+              <span class="commission-stat-val" id="calc-total-payable" style="color: var(--dark-primary);">₹1,605</span>
+            </div>
+          </div>
+          <div class="commission-formula-note">
+            <i data-lucide="info" class="icon-svg" style="width: 14px; height: 14px;"></i>
+            <span>Formula: 2.5% + ((60/100) × 7.5%) = 7.00% dynamic platform fee</span>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; margin-top: 0.5rem;">
+          <button class="btn-secondary" style="flex: 1;" onclick="app.closeModal('booking-modal')">Cancel</button>
+          <button class="btn-yellow" style="flex: 2;" onclick="app.proceedToBookingRazorpay()">
+            <i data-lucide="credit-card" class="icon-svg"></i>
+            <span>Proceed to Simulated Razorpay</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. DAILY STREAK CHECK-IN MODAL -->
+  <div id="streak-modal" class="modal-backdrop">
+    <div class="card" style="max-width: 480px; width: 100%; text-align: center;">
+      <div style="width: 64px; height: 64px; border-radius: 50%; background: #FEF3C7; border: 2px solid #FDE68A; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;">
+        <i data-lucide="zap" style="width: 34px; height: 34px; stroke: #D97706;"></i>
+      </div>
+      <h3 style="font-weight: 800; font-size: 1.4rem;" id="streak-modal-title">12-Day Active Streak!</h3>
+      <p style="color: var(--text-secondary); font-size: 0.88rem; margin: 0.5rem 0 1.25rem;">
+        Consistent daily learning boosts your recruiter visibility score and ranks you higher on peer leaderboards.
+      </p>
+
+      <!-- Weekly Calendar dots -->
+      <div style="display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 1.5rem;">
+        <div style="padding: 0.5rem 0.6rem; border-radius: var(--radius-md); background: #DCFCE7; font-size: 0.75rem; font-weight: 700; color: #166534; display: flex; flex-direction: column; align-items: center; gap: 0.2rem;"><span>Mon</span><i data-lucide="check" style="width: 14px; height: 14px;"></i></div>
+        <div style="padding: 0.5rem 0.6rem; border-radius: var(--radius-md); background: #DCFCE7; font-size: 0.75rem; font-weight: 700; color: #166534; display: flex; flex-direction: column; align-items: center; gap: 0.2rem;"><span>Tue</span><i data-lucide="check" style="width: 14px; height: 14px;"></i></div>
+        <div style="padding: 0.5rem 0.6rem; border-radius: var(--radius-md); background: #DCFCE7; font-size: 0.75rem; font-weight: 700; color: #166534; display: flex; flex-direction: column; align-items: center; gap: 0.2rem;"><span>Wed</span><i data-lucide="check" style="width: 14px; height: 14px;"></i></div>
+        <div style="padding: 0.5rem 0.6rem; border-radius: var(--radius-md); background: #DCFCE7; font-size: 0.75rem; font-weight: 700; color: #166534; display: flex; flex-direction: column; align-items: center; gap: 0.2rem;"><span>Thu</span><i data-lucide="check" style="width: 14px; height: 14px;"></i></div>
+        <div style="padding: 0.5rem 0.6rem; border-radius: var(--radius-md); background: #DCFCE7; font-size: 0.75rem; font-weight: 700; color: #166534; display: flex; flex-direction: column; align-items: center; gap: 0.2rem;"><span>Fri</span><i data-lucide="check" style="width: 14px; height: 14px;"></i></div>
+        <div style="padding: 0.5rem 0.6rem; border-radius: var(--radius-md); background: #FEF3C7; font-size: 0.75rem; font-weight: 700; color: #B45309; display: flex; flex-direction: column; align-items: center; gap: 0.2rem;" id="streak-modal-today"><span>Today</span><i data-lucide="clock" style="width: 14px; height: 14px;"></i></div>
+        <div style="padding: 0.5rem 0.6rem; border-radius: var(--radius-md); background: #F1F5F9; font-size: 0.75rem; font-weight: 700; color: #94A3B8; display: flex; flex-direction: column; align-items: center; gap: 0.2rem;"><span>Sun</span><i data-lucide="circle" style="width: 14px; height: 14px;"></i></div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+        <button class="btn-yellow" id="streak-checkin-btn" onclick="app.executeDailyCheckIn()">
+          <i data-lucide="check-circle" class="icon-svg"></i>
+          <span>Check In Today (+50 XP)</span>
+        </button>
+        <button class="btn-secondary" onclick="app.closeModal('streak-modal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. EDIT PROFILE DRAWER/MODAL -->
+  <div id="edit-profile-modal" class="modal-backdrop">
+    <div class="card" style="max-width: 620px; width: 100%; max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <h3 style="font-weight: 800; font-size: 1.3rem;">Edit Student Profile & Target Role</h3>
+        <button onclick="app.closeModal('edit-profile-modal')"><i data-lucide="x" class="icon-svg"></i></button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Full Name</label>
+          <input type="text" id="edit-name" value="Alex Rivera" style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+        </div>
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Target Job Title</label>
+          <input type="text" id="edit-target-role" value="Junior Full Stack Developer" style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+        </div>
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Bio & Career Goals</label>
+          <textarea id="edit-bio" rows="3" style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">Passionate junior engineer focusing on React, scalable Node.js microservices, and database optimization. Actively building capstones to mirror industry senior peers.</textarea>
+        </div>
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Portfolio & GitHub Links</label>
+          <input type="text" id="edit-github" value="https://github.com/alexrivera-dev" style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); margin-bottom: 0.5rem;" placeholder="GitHub URL">
+          <input type="text" id="edit-portfolio" value="https://alexrivera.craft" style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);" placeholder="Portfolio Site">
+        </div>
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Uploaded Resume</label>
+          <div style="border: 2px dashed var(--border-strong); border-radius: var(--radius-md); padding: 1rem; text-align: center; background: var(--bg-surface-subtle); cursor: pointer;" onclick="app.simulateResumeUpload()">
+            <i data-lucide="file-text" class="icon-svg" style="margin: 0 auto 0.25rem;"></i>
+            <div style="font-size: 0.85rem; font-weight: 700;" id="resume-filename">Alex_Rivera_Resume_2026.pdf</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted);">Click to upload updated PDF (Simulated parser)</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
+          <button class="btn-secondary" style="flex: 1;" onclick="app.closeModal('edit-profile-modal')">Cancel</button>
+          <button class="btn-primary" style="flex: 1;" onclick="app.saveProfileChanges()">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. VERIFIED ASSESSMENT QUIZ MODAL -->
+  <div id="assessment-modal" class="modal-backdrop">
+    <div class="card" style="max-width: 580px; width: 100%;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <div>
+          <span class="badge badge-yellow">Proof-of-Work Verification</span>
+          <h3 style="font-weight: 800; font-size: 1.3rem; margin-top: 0.2rem;">Node.js & REST API Verification Exam</h3>
+        </div>
+        <button onclick="app.closeModal('assessment-modal')"><i data-lucide="x" class="icon-svg"></i></button>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+        Complete this mini assessment to verify your Node.js skill and unlock the verified badge for recruiters.
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 1.25rem;">
+        <div style="background: var(--bg-surface-subtle); border-radius: var(--radius-md); padding: 1rem;">
+          <div style="font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem;">Q1: How do you handle non-blocking asynchronous I/O in Node.js event loops?</div>
+          <div style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.85rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+              <input type="radio" name="q1" checked> <span>Via libuv thread pool and asynchronous callbacks/promises</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+              <input type="radio" name="q1"> <span>By spawning a new OS thread for every single HTTP request</span>
+            </label>
+          </div>
+        </div>
+
+        <div style="background: var(--bg-surface-subtle); border-radius: var(--radius-md); padding: 1rem;">
+          <div style="font-weight: 700; font-size: 0.9rem; margin-bottom: 0.5rem;">Q2: What is the primary purpose of idempotency keys in payment REST APIs?</div>
+          <div style="display: flex; flex-direction: column; gap: 0.4rem; font-size: 0.85rem;">
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+              <input type="radio" name="q2" checked> <span>Prevent duplicate transaction charges upon network retries</span>
+            </label>
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+              <input type="radio" name="q2"> <span>Encrypt user payment credentials</span>
+            </label>
+          </div>
+        </div>
+
+        <button class="btn-yellow" onclick="app.submitAssessment()">
+          <i data-lucide="award" class="icon-svg"></i>
+          <span>Submit & Verify Node.js Badge</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. PROJECT BLUEPRINT VIEWER MODAL -->
+  <div id="blueprint-modal" class="modal-backdrop">
+    <div class="card" style="max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <div>
+          <span class="badge badge-yellow">Open Peer Blueprint</span>
+          <h3 style="font-weight: 800; font-size: 1.3rem; margin-top: 0.2rem;">E-Commerce Microservices & Event Stream</h3>
+        </div>
+        <button onclick="app.closeModal('blueprint-modal')"><i data-lucide="x" class="icon-svg"></i></button>
+      </div>
+
+      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+        This is the exact capstone project built by senior peer <strong>Sarah Chen</strong> that landed her role as Junior Developer at TechCorp.
+      </p>
+
+      <div style="background: var(--dark-primary); color: #FFFFFF; border-radius: var(--radius-md); padding: 1.25rem; font-family: monospace; font-size: 0.82rem; margin-bottom: 1.25rem;">
+        <div style="color: var(--accent-yellow); font-weight: 700; margin-bottom: 0.5rem;">// ARCHITECTURE BLUEPRINT STACK</div>
+        <div>• Gateway: Express.js Reverse Proxy with JWT Validation</div>
+        <div>• Order Service: Node.js + Prisma ORM + PostgreSQL</div>
+        <div>• Event Broker: Redis Streams for asynchronous order dispatch</div>
+        <div>• Frontend: React 18 + Tailwind CSS + Optimistic UI updates</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.5rem;">
+        <div style="font-weight: 700; font-size: 0.88rem;">Key Deliverable Milestones to Replicate:</div>
+        <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem;">
+          <i data-lucide="check" class="icon-svg" style="stroke: #10B981;"></i>
+          <span>Step 1: Scaffold monorepo with Turborepo & Docker Compose</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem;">
+          <i data-lucide="check" class="icon-svg" style="stroke: #10B981;"></i>
+          <span>Step 2: Implement transactional database schema with PostgreSQL</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem;">
+          <i data-lucide="circle" class="icon-svg" style="stroke: var(--text-muted);"></i>
+          <span>Step 3: Connect payment webhook listener with simulated idempotency</span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem;">
+        <button class="btn-primary" style="flex: 1;" onclick="app.cloneBlueprintTemplate()">
+          <i data-lucide="git-pull-request" class="icon-svg"></i>
+          <span>Clone Project Starter Template</span>
+        </button>
+        <button class="btn-secondary" onclick="app.closeModal('blueprint-modal')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. RECRUITER POST JOB MODAL -->
+  <div id="post-job-modal" class="modal-backdrop">
+    <div class="card" style="max-width: 580px; width: 100%;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <h3 style="font-weight: 800; font-size: 1.3rem;">Post New Job Listing with Weighted Skills</h3>
+        <button onclick="app.closeModal('post-job-modal')"><i data-lucide="x" class="icon-svg"></i></button>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Job Title</label>
+          <input type="text" id="job-title-input" value="Junior Platform Engineer" style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+        </div>
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Company Name</label>
+          <input type="text" id="job-company-input" value="SkillCraft Partner Labs" style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+        </div>
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Primary Required Skill (High Weight - 40%)</label>
+          <input type="text" id="job-skill-high" value="Node.js & Backend Architecture" style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+        </div>
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Secondary Skill (Medium Weight - 30%)</label>
+          <input type="text" id="job-skill-med" value="PostgreSQL & Database Optimization" style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
+          <button class="btn-secondary" style="flex: 1;" onclick="app.closeModal('post-job-modal')">Cancel</button>
+          <button class="btn-yellow" style="flex: 1;" onclick="app.saveNewJob()">Publish & Run Matcher</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. INSTRUCTOR QUIZ BUILDER MODAL -->
+  <div id="quiz-builder-modal" class="modal-backdrop">
+    <div class="card" style="max-width: 580px; width: 100%;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <h3 style="font-weight: 800; font-size: 1.3rem;">Assessment & Quiz Studio</h3>
+        <button onclick="app.closeModal('quiz-builder-modal')"><i data-lucide="x" class="icon-svg"></i></button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Assessment Title</label>
+          <input type="text" value="Advanced TypeScript Generics & Utility Types" style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+        </div>
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Passing Threshold for Verified Badge</label>
+          <select style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md); font-weight: 600;">
+            <option>80% Score + Capstone Code Review</option>
+            <option>85% Strict Verification</option>
+          </select>
+        </div>
+        <button class="btn-primary" onclick="app.saveQuiz()">Publish Assessment to Platform</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. INSTRUCTOR CREATE COURSE MODAL -->
+  <div id="create-course-modal" class="modal-backdrop">
+    <div class="card" style="max-width: 580px; width: 100%;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <h3 style="font-weight: 800; font-size: 1.3rem;">Publish New Course Track</h3>
+        <button onclick="app.closeModal('create-course-modal')"><i data-lucide="x" class="icon-svg"></i></button>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Course Title</label>
+          <input type="text" id="new-course-title" value="Scalable Distributed Event Architecture" style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+        </div>
+        <div>
+          <label style="font-size: 0.82rem; font-weight: 700; display: block; margin-bottom: 0.35rem;">Voucher Price (₹)</label>
+          <input type="number" id="new-course-price" value="1999" style="width: 100%; padding: 0.65rem 0.85rem; border: 1px solid var(--border-subtle); border-radius: var(--radius-md);">
+        </div>
+        <button class="btn-yellow" onclick="app.saveNewCourse()">Submit for Admin Moderation</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. GLOBAL SEARCH COMMAND PALETTE MODAL -->
+  <div id="search-modal" class="modal-backdrop">
+    <div class="command-palette-box">
+      <div class="palette-input-wrap">
+        <i data-lucide="search" class="icon-svg"></i>
+        <input type="text" id="palette-search-input" class="palette-input" placeholder="Type to search peers, skills, jobs, courses..." oninput="app.handleGlobalSearch(this.value)">
+        <button onclick="app.closeModal('search-modal')"><i data-lucide="x" class="icon-svg"></i></button>
+      </div>
+      <div class="palette-results-list" id="palette-results-container">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 11. NOTIFICATION FLYOUT -->
+  <div id="notification-panel" class="notification-flyout">
+    <div class="notification-header">
+      <div style="font-weight: 800; font-size: 0.95rem;">Notifications</div>
+      <button onclick="app.toggleNotifications()"><i data-lucide="x" class="icon-svg"></i></button>
+    </div>
+    <div class="notification-list" id="notification-items-container">
+      <!-- Injected via JS -->
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
+       SLEEK FLOATING TASKBAR / DOCK NAVIGATION BAR
+       ========================================================================= -->
+  <div class="floating-dock-container">
+    <nav class="floating-dock">
+      <!-- Brand Logo -->
+      <a href="javascript:void(0)" class="dock-brand" onclick="app.switchPortal('student', 'dashboard')">
+        <img src="logo.png" alt="SkillCraft" class="dock-logo-img">
+        <span class="dock-brand-name">SkillCraft</span>
+      </a>
+
+      <div class="dock-divider"></div>
+
+      <!-- Contextual Dynamic Navigation Tabs for Current Role -->
+      <div class="dock-nav-items" id="dock-dynamic-tabs">
+        <!-- Rendered dynamically by JavaScript based on active portal -->
+      </div>
+
+      <div class="dock-divider"></div>
+
+      <!-- Dock Quick Actions -->
+      <div class="dock-actions">
+        <!-- Global Search Icon -->
+        <button class="dock-action-btn" onclick="app.openModal('search-modal')" title="Search (Ctrl + K)">
+          <i data-lucide="search" class="icon-svg"></i>
+        </button>
+
+        <!-- Daily Streak Counter Status Pill -->
+        <div class="dock-streak-pill" onclick="app.openModal('streak-modal')" title="Click for Daily Check-in">
+          <i data-lucide="zap" class="icon-svg"></i>
+          <span id="dock-streak-text">12-Day Streak</span>
+        </div>
+
+        <!-- Notification Trigger -->
+        <button class="dock-action-btn" onclick="app.toggleNotifications()" title="Notifications">
+          <i data-lucide="bell" class="icon-svg"></i>
+          <span class="badge-count" id="notification-badge-count">3</span>
+        </button>
+
+        <!-- Role Switcher Pill & Dropdown -->
+        <div class="dock-role-switcher">
+          <button class="dock-role-btn" onclick="app.toggleRoleDropdown()">
+            <i data-lucide="user-check" class="icon-svg" style="stroke: var(--accent-yellow);"></i>
+            <span class="dock-role-tag" id="dock-role-label">STUDENT</span>
+            <i data-lucide="chevron-up" class="icon-svg" style="width: 14px; height: 14px;"></i>
+          </button>
+
+          <!-- Dropdown Menu -->
+          <div class="role-dropdown-menu" id="role-dropdown-menu">
+            <div class="role-menu-header">Switch Portal Role</div>
+            <button class="role-option-item active" onclick="app.switchPortal('student')">
+              <i data-lucide="graduation-cap" class="icon-svg"></i>
+              <span>Student Portal</span>
+            </button>
+            <button class="role-option-item" onclick="app.switchPortal('recruiter')">
+              <i data-lucide="briefcase" class="icon-svg"></i>
+              <span>Recruiter Portal</span>
+            </button>
+            <button class="role-option-item" onclick="app.switchPortal('instructor')">
+              <i data-lucide="book-open" class="icon-svg"></i>
+              <span>Instructor Portal</span>
+            </button>
+            <button class="role-option-item" onclick="app.switchPortal('admin')">
+              <i data-lucide="shield" class="icon-svg"></i>
+              <span>Admin Dashboard</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- User Profile Avatar with options -->
+        <div class="dock-profile-avatar" onclick="app.toggleProfileMenu()" title="Alex Rivera">
+          <span>AR</span>
+          <div class="status-online-dot"></div>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Load Main Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>
